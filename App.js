@@ -1,13 +1,22 @@
 import { Navigation } from "react-native-navigation";
+import ConfigureStore from "./src/components/Store/config";
+import { Provider } from "react-redux";
 import { LOGIN_SCREEN, HOME_SCREEN, ADDPOST_SCREEN } from "./src/config/routes";
 
-import LoginScreen from "./src/screens/Login/LoginScreen";
-import HomeScreen from "./src/screens/Home/HomeScreen";
-import AddPostScreen from "./src/screens/AddPost/AddPostScreen";
+import LoginScreen from "./src/components/views/Login/LoginScreen";
+import HomeScreen from "./src/components/views/Home/HomeScreen";
+import AddPostScreen from "./src/components/views/AddPost/AddPostScreen";
 
-Navigation.registerComponent(LOGIN_SCREEN, () => LoginScreen);
-Navigation.registerComponent(HOME_SCREEN, () => HomeScreen);
-Navigation.registerComponent(ADDPOST_SCREEN, () => AddPostScreen);
+const store = ConfigureStore();
+
+Navigation.registerComponent(LOGIN_SCREEN, () => LoginScreen, store, Provider);
+Navigation.registerComponent(HOME_SCREEN, () => HomeScreen, store, Provider);
+Navigation.registerComponent(
+  ADDPOST_SCREEN,
+  () => AddPostScreen,
+  store,
+  Provider
+);
 
 export default () =>
   Navigation.startSingleScreenApp({
