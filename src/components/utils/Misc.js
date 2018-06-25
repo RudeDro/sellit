@@ -46,3 +46,37 @@ export const getTokens = callback => {
     callback(values);
   });
 };
+
+export const navigatorDrawer = (event, $this) => {
+  if (event.type === "NavBarButtonPress" && event.id === "DrawerButton") {
+    $this.props.navigator.toggleDrawer({
+      side: "left",
+      animated: true
+    });
+  }
+};
+
+export const navigatorDeepLink = (event, $this) => {
+  if (event.type === "DeepLink") {
+    $this.props.navigator.toggleDrawer({
+      side: "left",
+      animated: true
+    });
+
+    if (event.payload.linkType === "tab") {
+      $this.props.navigator.switchToTab({
+        tabIndex: event.payload.linkIndex
+      });
+    } else {
+      $this.props.navigator.showModal({
+        screen: event.link,
+        animationType: "slide-horizontal",
+        navigatorStyle: {
+          navBarBackgroundColor: "#00ADA9",
+          screenBackgroundColor: "#ffffff"
+        },
+        backButtonHidden: false
+      });
+    }
+  }
+};
