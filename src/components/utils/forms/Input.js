@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TextInput } from "react-native";
+import { StyleSheet, View, Text, TextInput, Picker } from "react-native";
 
 const Input = props => {
   let template = null;
@@ -11,6 +11,15 @@ const Input = props => {
           {...props}
           style={[styles.input, props.overrideStyle]}
         />
+      );
+      break;
+    case "picker":
+      template = (
+        <Picker selectedValue={props.value} {...props}>
+          {props.options.map((item, i) => (
+            <Picker.Item key={i} label={item} value={item} />
+          ))}
+        </Picker>
       );
       break;
 

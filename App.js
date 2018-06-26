@@ -7,7 +7,8 @@ import {
   ADDPOST_SCREEN,
   SIDEDRAWER,
   USER_POSTS,
-  ARTICLE
+  ARTICLE,
+  NOT_LOGGED_IN
 } from "./src/config/routes";
 
 import LoginScreen from "./src/components/views/Login/LoginScreen";
@@ -16,6 +17,7 @@ import AddPostScreen from "./src/components/views/AddPost/AddPostScreen";
 import Sidedrawer from "./src/components/views/Sidedrawer/Sidedrawer";
 import UserPostsScreen from "./src/components/views/UserPosts/UserPosts";
 import ArticleScreen from "./src/components/views/Article/ArticleScreen";
+import NotLoggedInScreen from "./src/components/views/AddPost/NotLoggedInScreen";
 
 const store = ConfigureStore();
 
@@ -35,6 +37,12 @@ Navigation.registerComponent(
   Provider
 );
 Navigation.registerComponent(ARTICLE, () => ArticleScreen, store, Provider);
+Navigation.registerComponent(
+  NOT_LOGGED_IN,
+  () => NotLoggedInScreen,
+  store,
+  Provider
+);
 
 export default () =>
   Navigation.startSingleScreenApp({

@@ -4,7 +4,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import {
   HOME_SCREEN,
   ADDPOST_SCREEN,
-  SIDEDRAWER
+  SIDEDRAWER,
+  NOT_LOGGED_IN
 } from "../../../config/routes";
 import CircleIcon from "../../../assets/images/circle.png";
 
@@ -26,7 +27,7 @@ const navLeftButton = sources => {
   };
 };
 
-const LoadTabs = () => {
+const LoadTabs = loggedIn => {
   Promise.all([
     Icon.getImageSource("bars", 20, "white"),
     Icon.getImageSource("dollar", 20, "white"),
@@ -45,7 +46,7 @@ const LoadTabs = () => {
           }
         },
         {
-          screen: ADDPOST_SCREEN,
+          screen: loggedIn ? ADDPOST_SCREEN : NOT_LOGGED_IN,
           label: "Sell it",
           title: "Sell it",
           icon: sources[1],
