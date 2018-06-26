@@ -3,3 +3,4 @@ export const HOME_SCREEN = "sellit.HomeScreen";
 export const ADDPOST_SCREEN = "sellit.AddPostScreen";
 export const SIDEDRAWER = "sellit.Sidedrawer";
 export const USER_POSTS = "sellit.UserPostsScreen";
+export const ARTICLE = "sellit.ArticleScreen";

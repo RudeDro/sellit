@@ -12,6 +12,7 @@ import {
 } from "../../utils/Misc";
 import HorizontalScrollIcon from "./HorizontalScrollIcons";
 import BlockItem from "./blockitem";
+import { ARTICLE } from "../../../config/routes";
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -40,9 +41,32 @@ class HomeScreen extends Component {
     });
   }
 
+  goToArticleHandler = article => {
+    this.props.navigator.push({
+      screen: ARTICLE,
+      animationType: "slide-horizontal",
+      passProps: {
+        Article: article
+      },
+      backButtonTitle: "Back to home",
+      navigatorStyle: {
+        navBarTextFontSize: 20,
+        navBarTextColor: "#ffffff",
+        navBarTextFontFamily: "RobotoCondensed-Bold",
+        navBarBackgroundColor: "#00ADA9",
+        screenBackgroundColor: "#ffffff"
+      }
+    });
+  };
+
   showArticles = () =>
     this.state.articles.map((item, i) => (
-      <BlockItem key={`columnHome-${i}`} item={item} iteration={i} />
+      <BlockItem
+        key={`columnHome-${i}`}
+        item={item}
+        iteration={i}
+        goToArticleHandler={this.goToArticleHandler}
+      />
     ));
 
   updateCategoryHandler = value => {
