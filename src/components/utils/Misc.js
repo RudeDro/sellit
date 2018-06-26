@@ -80,3 +80,31 @@ export const navigatorDeepLink = (event, $this) => {
     }
   }
 };
+
+export const gridTwoColumns = list => {
+  let newList = [];
+  let listCopy = list;
+  let count = 1;
+  let vessel = {};
+
+  if (listCopy) {
+    listCopy.forEach(element => {
+      if (count == 1) {
+        vessel["blockOne"] = element;
+        count++;
+      } else {
+        vessel["blockTwo"] = element;
+        newList.push(vessel);
+
+        count = 1;
+        vessel = {};
+      }
+    });
+
+    if (vessel.blockOne) {
+      newList.push(vessel);
+    }
+  }
+
+  return newList;
+};
