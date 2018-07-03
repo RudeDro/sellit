@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import {
   StyleSheet,
   View,
@@ -8,9 +10,11 @@ import {
   Modal
 } from "react-native";
 
-import { navigatorDrawer } from "../../utils/Misc";
+import { navigatorDrawer, getTokens, setTokens } from "../../utils/Misc";
 import Input from "../../utils/forms/Input";
 import ValidationRules from "../../utils/forms/ValidationRules";
+import { addArticle, resetArticle } from "../../Store/actions/ArticleActions";
+import { autoSignIn } from "../../Store/actions/UserActions";
 
 class AddPostScreen extends Component {
   state = {
@@ -118,12 +122,39 @@ class AddPostScreen extends Component {
     }
 
     if (isFormValid) {
-      console.log(dataToSubmit);
       this.setState({
-        modalSuccess: true
+        loading: true
+      });
+
+      getTokens(value => {
+        const dateNow = new Date();
+        const expiration = dateNow.getTime();
+        const form = {
+          ...dataToSubmit,
+          uid: value[3][1]
+        };
+
+        if (expiration > value[2][1]) {
+          this.props.autoSignIn(value[1][1]).then(() => {
+            setTokens(this.props.User.userData, () => {
+              this.props
+                .addArticle(form, this.props.User.userData.token)
+                .then(() => {
+                  this.setState({
+                    modalSuccess: true
+                  });
+                });
+            });
+          });
+        } else {
+          this.props.addArticle(form, value[0][1]).then(() => {
+            this.setState({
+              modalSuccess: true
+            });
+          });
+        }
       });
     } else {
-      // this.state.errorsArray
       let errorsArray = [];
       for (let key in formCopy) {
         if (!formCopy[key].valid) {
@@ -170,7 +201,7 @@ class AddPostScreen extends Component {
       loading: false
     });
 
-    // Dispatch action to clear the store..
+    this.props.resetArticle();
   };
 
   render() {
@@ -342,4 +373,18 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddPostScreen;
+function mapStateToProps(state) {
+  return {
+    Articles: state.Articles,
+    User: state.User
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addArticle, autoSignIn, resetArticle }, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddPostScreen);
