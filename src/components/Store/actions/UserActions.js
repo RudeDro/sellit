@@ -1,4 +1,10 @@
-import { REGISTER_USER, SIGN_USER, AUTO_SIGN_IN } from "../types";
+import {
+  REGISTER_USER,
+  SIGN_USER,
+  AUTO_SIGN_IN,
+  GET_USER_POSTS
+} from "../types";
+import { FIREBASE_URL } from "../../../config/api";
 import axios from "axios";
 
 import { SIGN_UP, SIGN_IN, REFRESH } from "../../../config/api";
@@ -73,6 +79,31 @@ export function autoSignIn(refToken) {
 
   return {
     type: AUTO_SIGN_IN,
+    payload: request
+  };
+}
+
+export function getUserPosts(userId) {
+  let url = FIREBASE_URL + "/articles.json";
+  url = `${url}?orderBy=\"uid\"&equalTo=\"${userId}\"`;
+
+  const request = axios(url)
+    .then(response => {
+      const articles = [];
+      for (let key in response.data) {
+        articles.push({
+          ...response.data[key],
+          id: key
+        });
+      }
+      return articles;
+    })
+    .catch(err => {
+      return false;
+    });
+
+  return {
+    type: GET_USER_POSTS,
     payload: request
   };
 }

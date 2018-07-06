@@ -25,9 +25,9 @@ class AddPostScreen extends Component {
     errorsArray: [],
     form: {
       category: {
-        value: "",
+        value: "Sports",
         name: "category",
-        valid: false,
+        valid: true,
         type: "picker",
         options: ["Sports", "Music", "Clothing", "Electronics"],
         rules: {
