@@ -5,7 +5,8 @@ import {
   Text,
   Platform,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -28,7 +29,8 @@ class UserPostsScreen extends Component {
     super(props);
 
     this.state = {
-      posts: []
+      posts: [],
+      modal: false
     };
 
     if (Platform.OS === "ios") {
@@ -55,6 +57,13 @@ class UserPostsScreen extends Component {
     }
   }
 
+  showConfirm = postId => {
+    this.setState({
+      modal: true,
+      toDelete: postId
+    });
+  };
+
   showPosts = posts =>
     posts
       ? posts.map(post => (
@@ -72,7 +81,7 @@ class UserPostsScreen extends Component {
             </View>
 
             <View style={styles.buttons}>
-              <TouchableOpacity onPress={() => alert("delete")}>
+              <TouchableOpacity onPress={() => this.showConfirm(post.id)}>
                 <Text
                   style={{
                     fontFamily: "Roboto-Black",
@@ -84,6 +93,34 @@ class UserPostsScreen extends Component {
                 </Text>
               </TouchableOpacity>
             </View>
+
+            <Modal
+              animationType="slide"
+              transparent={false}
+              visible={this.state.modal}
+            >
+              <View style={{ padding: 50 }}>
+                <Text style={{ fontSize: 20 }}>
+                  Are you sure you want to delete the post?
+                </Text>
+                <View style={{ marginTop: 50 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      alert("yes");
+                    }}
+                  >
+                    <Text style={styles.modalDelete}>Yes, delete it</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({ modal: false });
+                    }}
+                  >
+                    <Text style={styles.modalCancel}>Nope</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
           </View>
         ))
       : null;
@@ -132,6 +169,18 @@ const styles = StyleSheet.create({
   },
   buttons: {
     alignItems: "center"
+  },
+  modalDelete: {
+    marginBottom: 20,
+    alignSelf: "center",
+    fontSize: 20,
+    color: "#C51162"
+  },
+  modalCancel: {
+    marginBottom: 20,
+    alignSelf: "center",
+    fontSize: 20,
+    color: "#00ADA9"
   }
 });
 
