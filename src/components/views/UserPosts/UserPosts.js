@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { getUserPosts } from "../../Store/actions/UserActions";
+import { getUserPosts, deleteUserPost } from "../../Store/actions/UserActions";
 
 class UserPostsScreen extends Component {
   static navigatorButtons = {
@@ -60,7 +60,19 @@ class UserPostsScreen extends Component {
   showConfirm = postId => {
     this.setState({
       modal: true,
-      toDelete: postId
+      toDeletePostId: postId
+    });
+  };
+
+  deletePost = postId => {
+    this.props.deleteUserPost(postId, this.props.User.userData).then(() => {
+      const userId = this.props.User.userData.uid;
+      this.props.getUserPosts(userId);
+
+      this.setState({
+        modal: false,
+        toDeletePostId: ""
+      });
     });
   };
 
@@ -85,7 +97,7 @@ class UserPostsScreen extends Component {
                 <Text
                   style={{
                     fontFamily: "Roboto-Black",
-                    color: "#f44336",
+                    color: "#C51162",
                     paddingBottom: 10
                   }}
                 >
@@ -98,6 +110,7 @@ class UserPostsScreen extends Component {
               animationType="slide"
               transparent={false}
               visible={this.state.modal}
+              onRequestClose={() => {}}
             >
               <View style={{ padding: 50 }}>
                 <Text style={{ fontSize: 20 }}>
@@ -106,7 +119,7 @@ class UserPostsScreen extends Component {
                 <View style={{ marginTop: 50 }}>
                   <TouchableOpacity
                     onPress={() => {
-                      alert("yes");
+                      this.deletePost(this.state.toDeletePostId);
                     }}
                   >
                     <Text style={styles.modalDelete}>Yes, delete it</Text>
@@ -192,7 +205,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getUserPosts }, dispatch);
+  return bindActionCreators({ getUserPosts, deleteUserPost }, dispatch);
 }
 
 export default connect(
