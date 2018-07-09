@@ -1,4 +1,5 @@
-Installation package: [Android APK](https://rudedro.github.io/assets/android/sellit-debug.apk)
+## Android installation package
+[Android APK](https://rudedro.github.io/assets/android/sellit-debug.apk)
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
