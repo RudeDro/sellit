@@ -2,13 +2,15 @@ import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
 
 const BlockItem = props => {
-  const itemImage = () => (
+  const itemImage = item => (
     <View>
       <Image
         resizeMode="cover"
         style={styles.itemImage}
         source={{
-          uri: "https://loremflickr.com/400/400/girl,dog,brazil"
+          uri: item.imageKey
+            ? "https://loremflickr.com/400/400/" + item.imageKey
+            : "https://loremflickr.com/400/400/girl,dog,brazil"
         }}
       />
     </View>
@@ -33,7 +35,7 @@ const BlockItem = props => {
             styles.blockGridItemContainerLeft
           ]}
         >
-          {itemImage()}
+          {itemImage(item.blockOne)}
           {itemText(item.blockOne)}
         </View>
       </TouchableOpacity>
@@ -48,7 +50,7 @@ const BlockItem = props => {
               styles.blockGridItemContainerRight
             ]}
           >
-            {itemImage()}
+            {itemImage(item.blockTwo)}
             {itemText(item.blockTwo)}
           </View>
         </TouchableOpacity>
